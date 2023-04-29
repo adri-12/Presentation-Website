@@ -2,13 +2,27 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MovieState } from "./movieState";
+//Animations
+import { motion } from "framer-motion";
+import { pageAnimation } from "../animations";
+
+interface Movie {
+  title: string;
+  mainImg: string;
+  secondaryImg: string;
+  url: string;
+  awards: {
+    title: string;
+    description: string;
+  }[];
+}
 
 const MovieDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const url = location.pathname;
-  const [movies, setMovies] = useState(MovieState);
-  const [movie, setMovie] = useState(null);
+  const [movies, setMovies] = useState<Movie[]>(MovieState);
+  const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
     const currentMovie = movies.filter((stateMovie) => stateMovie.url === url);
@@ -18,14 +32,19 @@ const MovieDetail = () => {
   return (
     <>
       {movie && (
-        <Details>
+        <Details
+          exit="exit"
+          variants={pageAnimation}
+          initial="hidden"
+          animate="show"
+        >
           <HeadLine>
             <h2>{movie.title}</h2>
             <img src={movie.mainImg} alt="movie" />
           </HeadLine>
           <Awards>
             {movie.awards.map((award) => (
-              <Awards
+              <Award
                 title={award.title}
                 description={award.description}
                 key={award.title}
@@ -41,7 +60,7 @@ const MovieDetail = () => {
   );
 };
 
-const Details = styled.div`
+const Details = styled(motion.div)`
   color: white;
 `;
 
@@ -94,7 +113,11 @@ const ImageDisplay = styled.div`
 `;
 
 //Award Component
-const Award = ({ title, description }) => {
+interface AwardProps {
+  title: string;
+  description: string;
+}
+const Award = ({ title, description }: AwardProps) => {
   return (
     <AwardStyle>
       <h3>{title}</h3>
