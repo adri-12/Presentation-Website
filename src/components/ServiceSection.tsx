@@ -5,14 +5,22 @@ import teamwork from "../img/teamwork.svg";
 import home2 from "../img/home2.png";
 
 //Styles
-import { About, Description, Image } from "../pages/styles";
+import { About, Description, Image } from "../styles";
 import styled from "styled-components";
-
+import { fade } from "../animations";
+import { scrollReveal } from "../animations";
+import { useScroll } from "./useScroll";
 // Do an array of cards
 
 const ServiceSection = () => {
+  const { element, controls } = useScroll();
   return (
-    <Services>
+    <Services
+      ref={element}
+      variants={scrollReveal}
+      animate={controls}
+      initial="hidden"
+    >
       <Description>
         <h2>
           High <span>quality</span> services
@@ -68,6 +76,9 @@ const Services = styled(About)`
 const Cards = styled.div`
   display: flex;
   flex-wrap: wrap;
+  @media (max-width: 1300px) { 
+   justify-content : center ;
+  }
 `;
 
 const Card = styled.div`

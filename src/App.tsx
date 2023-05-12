@@ -26,8 +26,6 @@ function App() {
           <Route path="/work/:id" element={<MovieDetail />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
-        <OurWork />
-        <ContactUs />
       </AnimatePresence>
     </div>
   );
